@@ -54,3 +54,22 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		map("<leader>ws", tele_builtin.lsp_workspace_symbols, "Show Workspace Symbols")
 	end,
 })
+
+--
+-- diagnostic visual changes
+--
+vim.diagnostic.config({
+	virtual_lines = {
+		severity = {
+			vim.diagnostic.severity.ERROR,
+		},
+	},
+	virtual_text = {
+		severity = {
+			vim.diagnostic.severity.WARN,
+			vim.diagnostic.severity.INFO,
+			vim.diagnostic.severity.HINT,
+		},
+	},
+})
+vim.api.nvim_set_hl(0, "DiagnosticVirtualTextWarn", { fg = "#3F4F44", bg = "NONE" }) -- Less bold for warnings

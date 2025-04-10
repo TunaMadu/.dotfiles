@@ -69,38 +69,4 @@ nvim_lint.linters_by_ft = {
 	typescriptreact = { "eslint_d" },
 }
 
-local lint_file_ext = {
-	"*.js",
-	"*.jsx",
-	"*.ts",
-	"*.tsx",
-}
-
--- we could wrap this whole idea into a auto command where if we want to, we can turn
--- it on and if we dont we dont...
---
-
-augroup = vim.api.nvim_create_augroup("linter_config", { clear = true })
-vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-	desc = "Linting based on file types",
-	pattern = lint_file_ext,
-	callback = function()
-		nvim_lint.try_lint()
-	end,
-})
-
-vim.diagnostic.config({
-	virtual_lines = {
-		severity = {
-			vim.diagnostic.severity.ERROR,
-		},
-	},
-	virtual_text = {
-		severity = {
-			vim.diagnostic.severity.WARN,
-			vim.diagnostic.severity.INFO,
-			vim.diagnostic.severity.HINT,
-		},
-	},
-})
-vim.api.nvim_set_hl(0, "DiagnosticVirtualTextWarn", { fg = "#3F4F44", bg = "NONE" }) -- Less bold for warnings
+-- the linting nvim tie in is abstracted into a user commmand
