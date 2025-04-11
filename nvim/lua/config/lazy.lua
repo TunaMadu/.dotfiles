@@ -99,8 +99,11 @@ require("lazy").setup({
 		opts_extend = { "sources.default" },
 	},
 
+	--
+	-- git integration
+	--
+
 	{
 		"lewis6991/gitsigns.nvim",
-		opts = {},
 	},
 })
