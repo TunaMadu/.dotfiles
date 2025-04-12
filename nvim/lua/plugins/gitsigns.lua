@@ -6,6 +6,13 @@ local function map(mode, l, r, opts)
 	vim.keymap.set(mode, l, r, opts)
 end
 
+-- outside from the sign posts that gitsigns provide
+-- tpopes version of git is so much more powerful IMO
+-- the real good parts of this configuration are the opt in
+-- keybinds it offers. Especially in specifying specific hunks
+-- for commits - the unstaging process is 60% of what i would
+-- of used the undo tree plugin lol
+
 gitsigns.setup({
 
 	on_attach = function()
@@ -39,11 +46,12 @@ gitsigns.setup({
 			gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
 		end)
 
-		-- will stage all current hunks within a file
-		-- to unstage them, manually go through and unstage with above
-		-- keymaps
-		map("n", "<leader>hS", gitsigns.stage_buffer)
-		map("n", "<leader>hR", gitsigns.reset_buffer)
+		-- i prefer doing stages or hard resets manually
+		-- through git... still carry some trauma from
+		-- using jetbrains git gui shenanigans
+		-- map("n", "<leader>hS", gitsigns.stage_buffer)
+		-- map("n", "<leader>hR", gitsigns.reset_buffer)
+
 		map("n", "<leader>hp", gitsigns.preview_hunk_inline)
 
 		map("n", "<leader>hb", function()
@@ -60,12 +68,9 @@ gitsigns.setup({
 			gitsigns.setqflist("all")
 		end)
 
-		-- Toggles
+		-- Really nice way to see what changed through a toggle
 		map("n", "<leader>tb", gitsigns.blame)
 		map("n", "<leader>td", gitsigns.toggle_deleted)
 		map("n", "<leader>tw", gitsigns.toggle_word_diff)
-
-		-- Text object
-		map({ "o", "x" }, "ih", gitsigns.select_hunk)
 	end,
 })
