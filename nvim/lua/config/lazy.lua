@@ -55,7 +55,6 @@ require("lazy").setup({
 	-- LSP configuration
 	--
 
-	{ "neovim/nvim-lspconfig" },
 	{ "williamboman/mason.nvim", opts = {} },
 
 	---

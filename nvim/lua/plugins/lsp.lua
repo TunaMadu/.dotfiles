@@ -1,11 +1,7 @@
 --
 -- Requirements:
---  run :FetchTools to install the language
---  servers on the system...
+--  run :FetchTools to install the language servers on the system...
 --
-
-local lspconfig = require("lspconfig")
-local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 local tele_builtin = require("telescope.builtin")
 
@@ -17,13 +13,7 @@ local ls_list = {
 }
 
 for _, lsp in ipairs(ls_list) do
-	lspconfig[lsp].setup({ capabilities = capabilities })
-end
-
--- helper
-local function map(keymap, func, desc, mode)
-	mode = mode or "n"
-	vim.keymap.set(mode, keymap, func, { desc = desc, noremap = true })
+	vim.lsp.enable(lsp) -- lsp's have not been this easy...
 end
 
 --
@@ -35,6 +25,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	desc = "Lsp keymaps",
 	group = augroup,
 	callback = function()
+		-- helper
+		local function map(keymap, func, desc, mode)
+			mode = mode or "n"
+			vim.keymap.set(mode, keymap, func, { desc = desc, noremap = true })
+		end
+
 		-- CORE ACTIONS
 		map("gd", tele_builtin.lsp_definitions, "Goto Definition")
 		map("gr", tele_builtin.lsp_references, "Goto References")
