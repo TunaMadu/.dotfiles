@@ -12,9 +12,7 @@ local ls_list = {
 	"ts_ls",
 }
 
-for _, lsp in ipairs(ls_list) do
-	vim.lsp.enable(lsp) -- lsp's have not been this easy...
-end
+vim.lsp.enable(ls_list) -- lsp's have not been this easy...
 
 --
 -- LSP MAPPING
