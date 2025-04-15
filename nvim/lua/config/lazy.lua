@@ -96,6 +96,14 @@ require("lazy").setup({
 			},
 		},
 		opts_extend = { "sources.default" },
+		completion = {
+			documentation = {
+				auto_show = true,
+			},
+		},
+		signature = {
+			enabled = true,
+		},
 	},
 
 	--
