@@ -30,6 +30,7 @@ conform.setup({
 		typescript = { "prettier" },
 		typescriptreact = { "prettier" },
 		json = { "prettier" },
+		c = { "clang-format" },
 	},
 })
 
@@ -43,6 +44,7 @@ local format_file_ext = {
 	"*.html",
 	"*.css",
 	"*.json",
+	"*.c",
 }
 
 local augroup = vim.api.nvim_create_augroup("formatter_config", { clear = true })
