@@ -1,33 +1,90 @@
-return {
+---@brief
+---
+--- https://github.com/luals/lua-language-server
+---
+--- Lua language server.
+---
+--- `lua-language-server` can be installed by following the instructions [here](https://luals.github.io/#neovim-install).
+---
+--- The default `cmd` assumes that the `lua-language-server` binary can be found in `$PATH`.
+---
+---
+--- See `lua-language-server`'s [documentation](https://luals.github.io/wiki/settings/) for an explanation of the above fields:
+--- * [Lua.runtime.path](https://luals.github.io/wiki/settings/#runtimepath)
+--- * [Lua.workspace.library](https://luals.github.io/wiki/settings/#workspacelibrary)
+---
 
-	cmd = { "lua-language-server" },
-	filetypes = { "lua" },
-
-	-- im not sure how root markers works with files types...
-	-- according to gpt, (are we really in a world that we're beginning to say this...)
-	-- the root_markers and by extension the root_dir atribute, are flags or potential
-	-- paths that tell nvim where our project begins if we open nvim within a directory.
-	-- It tells nvim where our project begins, so that it has enough context for the lsp
-	-- Where instead of having a lsp know everything there is to know about our file we opened
-	-- nvim with, it now has the context of our entire project. Where we get that nice cross
-	-- directory autocompletions, and so on. p neat.
-	root_markers = {
-		".luarc.json",
-		".luarc.jsonc",
-		".luacheckrc",
-		".stylua.toml",
-		"stylua.toml",
-		"selene.toml",
-		"selene.yml",
-		".git",
-	},
+local root_markers1 = {
+  '.emmyrc.json',
+  '.luarc.json',
+  '.luarc.jsonc',
+}
+local root_markers2 = {
+  '.luacheckrc',
+  '.stylua.toml',
+  'stylua.toml',
+  'selene.toml',
+  'selene.yml',
 }
 
--- in the past the file type atribute was resolved through a autocommand
--- the manual version of all this was supplying things each to a specific
--- ft.lua file convention, where nvim will try to attach something to a
--- specified filetype within a directory. Because this was a pain, people
--- used an autocommand that wrapped the cofigurations and started the server
--- within one of nvim's filetype events. Where they had the ability to
--- start the server for multiple file extensions simply by listing them
--- out within the event's pattern attribute. Some real clever shit!
+---@type vim.lsp.Config
+return {
+  cmd = { 'lua-language-server' },
+  filetypes = { 'lua' },
+  root_markers = vim.fn.has('nvim-0.11.3') == 1 and { root_markers1, root_markers2, { '.git' } }
+    or vim.list_extend(vim.list_extend(root_markers1, root_markers2), { '.git' }),
+  settings = {
+    Lua = {
+      codeLens = { enable = true },
+      hint = { enable = true, semicolon = 'Disable' },
+    },
+  },
+  -- Triggers after LSP has been initialized.
+  -- The function will pass in the client.
+  -- The client is the same object we've defined 
+  -- settings above. Hence the weird table extension.
+  -- :h vim.lsp.client
+  -- :h vim.lsp.clientconfig
+   on_init = function(client)
+     if client.workspace_folders then
+       local path = client.workspace_folders[1].name
+       if
+         path ~= vim.fn.stdpath('config')
+         and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
+       then
+         return
+       end
+     end
+
+     client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+       runtime = {
+         -- Tell the language server which version of Lua you're using (most
+         -- likely LuaJIT in the case of Neovim)
+         version = 'LuaJIT',
+         -- Tell the language server how to find Lua modules same way as Neovim
+         -- (see `:h lua-module-load`)
+         path = {
+           'lua/?.lua',
+           'lua/?/init.lua',
+         },
+       },
+       -- Make the server aware of Neovim runtime files
+       workspace = {
+         checkThirdParty = false,
+         library = {
+           vim.env.VIMRUNTIME,
+           vim.env.HOME.."/.config/nvim",
+           -- Depending on the usage, you might want to add additional paths
+           -- here.
+           '${3rd}/luv/library',
+           -- '${3rd}/busted/library',
+         },
+         -- Or pull in all of 'runtimepath'.
+         -- NOTE: this is a lot slower and will cause issues when working on
+         -- your own configuration.
+         -- See https://github.com/neovim/nvim-lspconfig/issues/3189
+         -- library = vim.api.nvim_get_runtime_file('', true),
+       },
+     })
+   end,
+}
