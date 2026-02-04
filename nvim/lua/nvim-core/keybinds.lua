@@ -17,17 +17,10 @@ vim.keymap.set("n", "<C-D>", "10<C-d>", { desc = "Scroll down by 10", noremap = 
 vim.keymap.set("n", "<C-y>", "10<C-y>", { desc = "Peak 10 lines up", noremap = true })
 vim.keymap.set("n", "<C-e>", "10<C-e>", { desc = "Peak 10 lines below", noremap = true })
 
--- from kickstart
--- Keybinds to make split navigation easier.
--- but by default we navigate by using <C-w><C-hjkl>
--- which is not too hard to get used to.
---
--- vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
--- vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
--- vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
--- vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
--- See `:help wincmd` for a list of all window commands
---
+-- tab navigation
+
+vim.keymap.set("n", "<leader>n", "<cmd>tabN<CR>", { desc = "Move to next tab" })
+vim.keymap.set("t", "<esc><esc>", "<C-\\><C-N>", { desc = "Get out of terminal mode" })
 
 ---
 --- PLUGIN KEYBINDS TO MAKE LIFE EASIER TO FIND THEM IN THE FUTURE.
@@ -41,6 +34,7 @@ vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Telescope find f
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Telescope live grep" })
 vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Telescope buffers" })
 vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
+vim.keymap.set("n", "<leader>fm", builtin.keymaps, { desc = "Telescope keymaps" })
 
 -- LSP keybinds
 -- While nvim comes with several lsp keybinds, telescope allows

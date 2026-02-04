@@ -12,7 +12,7 @@ local language_info_repo = {
 		filetype = "*.go",
 		language_server = "gopls",
 		formatters = { "goimports", "gofumpt" },
-		linter = { "golangcilint" }, -- using the names specified on nvim-lint not the one from MASON
+		-- linter = { "golangcilint" }, -- using the names specified on nvim-lint not the one from MASON
 	},
 
 	markdown = { filetype = "*.md" },
