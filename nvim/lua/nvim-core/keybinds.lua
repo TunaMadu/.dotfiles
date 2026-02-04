@@ -20,7 +20,7 @@ vim.keymap.set("n", "<C-e>", "10<C-e>", { desc = "Peak 10 lines below", noremap 
 -- tab navigation
 
 vim.keymap.set("n", "<leader>n", "<cmd>tabN<CR>", { desc = "Move to next tab" })
-vim.keymap.set("t", "<esc><esc>", "<C-\\><C-N>", { desc = "Get out of terminal mode" })
+vim.keymap.set("t", "<esc>", "<C-\\><C-N>", { desc = "Get out of terminal mode" })
 
 ---
 --- PLUGIN KEYBINDS TO MAKE LIFE EASIER TO FIND THEM IN THE FUTURE.
